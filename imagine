@@ -1,10 +1,9 @@
 #!/opt/homebrew/bin/python3
 
-import sys, os
-import argparse, base64, openai
+import sys, argparse, base64, openai
+from PIL import Image
+from io import BytesIO
 
-
-PATH = os.path.expanduser("~/Desktop/Downloads")
 
 # Set up argument parser
 parser = argparse.ArgumentParser(description="Generate an image with OpenAI.")
@@ -34,7 +33,6 @@ response = openai.Image.create(
    size=SIZE
 )["data"][0]["b64_json"]
 
-# Decode the Base64 encoded image and save it as a .png file
-with open(f"{PATH}/{args.prompt}.png", "wb") as file:
-   photo = base64.b64decode(response)
-   file.write(photo)
+# Decode the Base64 image and open it as a .png file
+photo = base64.b64decode(response)
+Image.open(BytesIO(photo)).show()
