@@ -3,12 +3,12 @@
 import sys, os
 import argparse, base64, openai
 
+
 PATH = os.path.expanduser("~/Desktop/Downloads")
 
 # Set up argument parser
 parser = argparse.ArgumentParser(description="Generate an image with OpenAI.")
 parser.add_argument("prompt", help="Image prompt, e.g., 'A horse on the moon'")
-parser.add_argument("-n", "--number", type=int, default=1, help="Number of images to generate (default: 1)")
 parser.add_argument("-s", "--size", choices=["small", "medium", "large"], default="large", help="Image size: 'small' (256x256), 'medium' (512x512), or 'large' (1024x1024) (default: 'large')")
 
 # Parse command line arguments
@@ -18,9 +18,6 @@ args = parser.parse_args()
 if not args.prompt:
    print('Please provide an image prompt, e.g., "A horse on the moon"')
    sys.exit(1)
-
-# Set image parameters
-N = args.number
 
 # Map size arguments to actual dimensions
 size_mapping = {
@@ -34,14 +31,10 @@ SIZE = size_mapping[args.size]
 response = openai.Image.create(
    response_format="b64_json",
    prompt=args.prompt,
-   size=SIZE,
-   n=N
-)
-
-# Get the Base64 encoded image
-base_64 = response["data"][0]["b64_json"]
+   size=SIZE
+)["data"][0]["b64_json"]
 
 # Decode the Base64 encoded image and save it as a .png file
-img_data = base64.b64decode(base_64)
 with open(f"{PATH}/{args.prompt}.png", "wb") as file:
-    file.write(img_data)
+   photo = base64.b64decode(response)
+   file.write(photo)
