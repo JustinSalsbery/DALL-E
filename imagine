@@ -15,7 +15,8 @@ args = parser.parse_args()
 
 # Check if prompt is provided
 if args.prompt == None:
-   print('imagine "A horse on the moon"')
+   print('imagine "A horse on the moon."')
+   print('imagine "$(chat \'Write a prompt for DALL-E\')"')
    sys.exit(0)
 
 # Map size arguments to actual dimensions
