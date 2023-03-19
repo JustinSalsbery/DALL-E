@@ -7,16 +7,16 @@ from io import BytesIO
 
 # Set up argument parser
 parser = argparse.ArgumentParser(description="Generate an image with OpenAI.")
-parser.add_argument("prompt", help="Image prompt, e.g., 'A horse on the moon'")
+parser.add_argument("prompt", nargs="?", help="Image prompt, e.g., 'A horse on the moon'")
 parser.add_argument("-s", "--size", choices=["small", "medium", "large"], default="large", help="Image size: 'small' (256x256), 'medium' (512x512), or 'large' (1024x1024) (default: 'large')")
 
 # Parse command line arguments
 args = parser.parse_args()
 
 # Check if prompt is provided
-if not args.prompt:
-   print('Please provide an image prompt, e.g., "A horse on the moon"')
-   sys.exit(1)
+if args.prompt == None:
+   print('imagine "A horse on the moon"')
+   sys.exit(0)
 
 # Map size arguments to actual dimensions
 size_mapping = {
