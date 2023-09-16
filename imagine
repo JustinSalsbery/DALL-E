@@ -6,32 +6,36 @@ from io import BytesIO
 
 
 # Set up argument parser
-parser = argparse.ArgumentParser(description="Generate an image with OpenAI.")
-parser.add_argument("prompt", nargs="?", help="Image prompt, e.g., 'A horse on the moon'")
-parser.add_argument("-s", "--size", choices=["small", "medium", "large"], default="large", help="Image size: 'small' (256x256), 'medium' (512x512), or 'large' (1024x1024) (default: 'large')")
+parser = argparse.ArgumentParser(description="generate an image using DALL-E")
+parser.add_argument("prompt", nargs="?", help="image prompt, e.g., 'A horse on the moon.'")
+parser.add_argument("-s", "--size", choices=["small", "medium", "large"], default="large", help="image size: (256x256), (512x512), (1024x1024) [default]")
 
 # Parse command line arguments
 args = parser.parse_args()
 
+if not sys.stdin.isatty():
+        args.prompt = sys.stdin.read().strip()
+
 # Check if prompt is provided
-if args.prompt == None:
-   print('imagine "A horse on the moon."')
-   print('imagine "$(chat \'Write a prompt for DALL-E\')"')
-   sys.exit(0)
+if len(sys.argv) == 1 and args.prompt is None:
+        print('examples:')
+        print('  imagine "A horse on the moon."')
+        print('  imagine "$(chat \'Write a prompt for DALL-E.\')"')
+        sys.exit(0)
 
 # Map size arguments to actual dimensions
 size_mapping = {
-   "small": "256x256",
-   "medium": "512x512",
-   "large": "1024x1024"
+        "small": "256x256",
+        "medium": "512x512",
+        "large": "1024x1024"
 }
-SIZE = size_mapping[args.size]
+size = size_mapping[args.size]
 
 # Generate image
 response = openai.Image.create(
-   response_format="b64_json",
-   prompt=args.prompt,
-   size=SIZE
+        response_format="b64_json",
+        prompt=args.prompt,
+        size=size
 )["data"][0]["b64_json"]
 
 # Decode the Base64 image and open it as a .png file
