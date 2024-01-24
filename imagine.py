@@ -1,13 +1,15 @@
-#!/opt/homebrew/bin/python3
+#! python3
 
 import sys
 import argparse
 import base64
+
 from openai import OpenAI
 from PIL import Image
 from io import BytesIO
 
 
+# simplifies the default help format
 class CustomHelpFormatter(argparse.HelpFormatter):
     def add_usage(self, usage, actions, groups, prefix=None):
         pass
@@ -18,7 +20,7 @@ class CustomHelpFormatter(argparse.HelpFormatter):
         return super()._format_action_invocation(action)
 
 
-# Set up argument parser
+# set up argument parser
 parser = argparse.ArgumentParser(
     description="generate an image using DALL-E", formatter_class=CustomHelpFormatter)
 parser.add_argument("prompt", nargs="?",
@@ -32,13 +34,13 @@ parser.add_argument("-q", "--quality", choices=["standard", "hd"],
 parser.add_argument("-t", "--type", choices=["natural", "vivid"],
                     default="vivid", help="{natural, vivid} style")
 
-# Parse command line arguments
+# parse command line arguments
 args = parser.parse_args()
 
 if not sys.stdin.isatty():
     args.prompt = sys.stdin.read()
 
-# Check if prompt is provided
+# check if prompt is provided
 if len(sys.argv) == 1 and args.prompt is None:
     print("imagine --help\n")
     print('examples:')
@@ -46,7 +48,7 @@ if len(sys.argv) == 1 and args.prompt is None:
     print('  imagine "$(chat \'Write a prompt for DALL-E.\')"')
     sys.exit(0)
 
-# Map size arguments to actual dimensions
+# map size arguments to actual dimensions
 size_mapping = {
     "default": "1024x1024",
     "wide": "1792x1024",
@@ -54,7 +56,7 @@ size_mapping = {
 }
 size = size_mapping[args.size]
 
-# Generate image
+# generate image
 openai = OpenAI()
 response = openai.images.generate(
     model="dall-e-3",
@@ -65,6 +67,6 @@ response = openai.images.generate(
     size=size
 ).data[0].b64_json
 
-# Decode the Base64 image and open it as a .png file
+# decode the Base64 image and open it as a .png file
 photo = base64.b64decode(response)
 Image.open(BytesIO(photo)).show()

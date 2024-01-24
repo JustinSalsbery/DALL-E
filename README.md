@@ -1,5 +1,5 @@
 # DALL-E
-Terminal interface for DALL-E.
+Terminal interface for DALL-E. See --help for options.
 
 ## Requires:
 - Pillow python library.
@@ -7,10 +7,7 @@ Terminal interface for DALL-E.
 - Valid OPENAI_API_KEY environment variable. Api key generated at: https://platform.openai.com/account/api-keys
 
 ## Installation:
-- pip install Pillow
-- pip install openai
-- [Linux] Update shebang.
-- Place in /usr/local/bin/
+- make install
 
 ## Usage:
 - imagine "Horses on moon, oil painting"
