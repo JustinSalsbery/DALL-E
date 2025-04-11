@@ -21,18 +21,19 @@ class CustomHelpFormatter(argparse.HelpFormatter):
 
 
 # set up argument parser
-parser = argparse.ArgumentParser(
-    description="generate an image using DALL-E", formatter_class=CustomHelpFormatter)
+parser = argparse.ArgumentParser(description="generate an image using DALL-E", 
+                                 formatter_class=CustomHelpFormatter)
+
 parser.add_argument("prompt", nargs="?",
                     help="image prompt, e.g., 'A horse on the moon.'")
-parser.add_argument("-v", "--version", action="version",
-                    version='%(prog)s 1.2.1', help="show version number and exit")
-parser.add_argument("-s", "--size", choices=["default", "wide", "tall"],
-                    default="default", help="{default, wide, tall} aspect ratio")
-parser.add_argument("-q", "--quality", choices=["standard", "hd"],
-                    default="standard", help="{standard, hd} detailing")
-parser.add_argument("-t", "--type", choices=["natural", "vivid"],
-                    default="vivid", help="{natural, vivid} style")
+parser.add_argument("-v", "--version", action="version", version='%(prog)s 1.2.1', 
+                    help="show version number and exit")
+parser.add_argument("-s", "--size", choices=["default", "wide", "tall"], default="default", 
+                    help="{default, wide, tall} aspect ratio")
+parser.add_argument("-q", "--quality", choices=["standard", "hd"], default="standard", 
+                    help="{standard, hd} detailing")
+parser.add_argument("-t", "--type", choices=["natural", "vivid"], default="vivid", 
+                    help="{natural, vivid} style")
 
 # parse command line arguments
 args = parser.parse_args()
@@ -54,6 +55,7 @@ size_mapping = {
     "wide": "1792x1024",
     "tall": "1024x1792"
 }
+
 size = size_mapping[args.size]
 
 # generate image
